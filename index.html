@@ -90,7 +90,15 @@
         .edu-gpa strong { color: var(--accent); font-weight: 700; }
         .edu-details { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.5rem; line-height: 1.6; }
         .edu-clubs { margin-top: 0.75rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
-        .club-tag { background: var(--accent-light); color: var(--accent-text); border: 1px solid rgba(180,83,9,0.15); padding: 0.2rem 0.65rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+        .club-tag { background: var(--accent-light); color: var(--accent-text); border: 1px solid rgba(180,83,9,0.15); padding: 0.2rem 0.65rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s; user-select: none; }
+        .club-tag:hover { background: #fde68a; border-color: rgba(180,83,9,0.35); }
+        .club-tag.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+        .club-details { display: none; margin-top: 0.85rem; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 0.9rem 1.1rem; font-size: 0.82rem; color: var(--text-muted); line-height: 1.7; animation: fadeIn 0.2s ease; }
+        .club-details.show { display: block; }
+        .club-details strong { color: var(--accent-mid); display: block; margin-bottom: 0.35rem; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; }
+        .club-details ul { padding-left: 1.1rem; margin: 0; }
+        .club-details ul li { margin-bottom: 0.3rem; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
 
         /* SKILLS */
         .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 1.5rem; }
@@ -246,10 +254,41 @@
                 <p class="edu-gpa">GPA: <strong>93</strong></p>
                 <p class="edu-details">Data analytics, business strategy, marketing analytics, machine learning, financial modelling, business intelligence, and AI-driven decision-making.</p>
                 <div class="edu-clubs">
-                    <span class="club-tag">Capital Market Club</span>
-                    <span class="club-tag">Product Club</span>
-                    <span class="club-tag">GreenBiz Club</span>
-                    <span class="club-tag">Sports Tech Club</span>
+                    <span class="club-tag" data-club="capital">Capital Market Club</span>
+                    <span class="club-tag" data-club="product">Product Club</span>
+                    <span class="club-tag" data-club="greenbiz">GreenBiz Club</span>
+                    <span class="club-tag" data-club="sportstech">Sports Tech Club</span>
+                </div>
+                <div class="club-details" id="club-capital">
+                    <strong>Capital Market Club</strong>
+                    <ul>
+                        <li>Studied trading strategies, portfolio construction, and economic indicators.</li>
+                        <li>Participated in investment challenges and market simulations.</li>
+                        <li>Engaged with professionals from leading Israeli investment houses.</li>
+                    </ul>
+                </div>
+                <div class="club-details" id="club-product">
+                    <strong>Product Club</strong>
+                    <ul>
+                        <li>Won a pitching competition sponsored by Artlist — built a full feature demo and pitched it to senior executives at the company.</li>
+                        <li>Developed product thinking through real-world case studies and product critiques.</li>
+                        <li>Collaborated on product roadmap exercises and go-to-market strategy workshops.</li>
+                    </ul>
+                </div>
+                <div class="club-details" id="club-greenbiz">
+                    <strong>GreenBiz Club</strong>
+                    <ul>
+                        <li>Participated in sustainability-focused hackathons, developing data-driven solutions for environmental challenges.</li>
+                        <li>Explored the intersection of business strategy and ESG frameworks.</li>
+                        <li>Collaborated on projects analyzing green economy trends and impact measurement.</li>
+                    </ul>
+                </div>
+                <div class="club-details" id="club-sportstech">
+                    <strong>Sports Tech Club</strong>
+                    <ul>
+                        <li>Explored technology applications in sports — performance analytics, fan engagement, and wearables.</li>
+                        <li>Engaged with startups and investors operating in the sports-tech ecosystem.</li>
+                    </ul>
                 </div>
             </div>
             <div class="edu-card">
@@ -366,17 +405,6 @@
                     <a href="https://github.com/YardenHacker/SQL-Movie-Recommendations-Engine" target="_blank" class="project-link">View on GitHub &rarr;</a>
                 </div>
             </div>
-            <div class="project-card">
-                <div class="project-card-body">
-                    <div class="project-header">
-                        <h3>Lyrics Stats</h3>
-                        <span class="project-tag">NLP · Analysis</span>
-                    </div>
-                    <p>NLP analysis of lyrical patterns, word frequency, sentiment trends, and vocabulary richness across music genres and artists.</p>
-                    <div class="project-tech"><span>Python</span><span>NLP</span><span>Pandas</span><span>Matplotlib</span></div>
-                    <a href="https://github.com/YardenHacker/lyrics-stats" target="_blank" class="project-link">View on GitHub &rarr;</a>
-                </div>
-            </div>
         </div>
 
         <p class="project-category-label">Personal</p>
@@ -437,6 +465,20 @@
     <p>&copy; 2026 <span>Yarden Safran</span></p>
 </footer>
 
-<script src="script.js"></script>
+<script>
+document.querySelectorAll('.club-tag[data-club]').forEach(tag => {
+    tag.addEventListener('click', () => {
+        const id = 'club-' + tag.dataset.club;
+        const detail = document.getElementById(id);
+        const isOpen = detail.classList.contains('show');
+        document.querySelectorAll('.club-details').forEach(d => d.classList.remove('show'));
+        document.querySelectorAll('.club-tag').forEach(t => t.classList.remove('active'));
+        if (!isOpen) {
+            detail.classList.add('show');
+            tag.classList.add('active');
+        }
+    });
+});
+</script>
 </body>
 </html>
